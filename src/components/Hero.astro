@@ -1,0 +1,174 @@
+---
+const {
+  title = "",
+  subtitle = "",
+  workReelTitle = "",
+  videoUrl = "#",
+  introParagraphs = [],
+  email = "",
+  ctaText = "",
+  ctaLink = "#",
+  heroImage = "",
+} = Astro.props;
+---
+
+<!-- Importar fuentes -->
+<link
+  href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;500;600&family=Work+Sans:wght@300;400;500;600&display=swap"
+  rel="stylesheet"
+/>
+
+<style>
+  :root {
+    --navbar-height: 4rem;
+    --color-accent: #8b5cf6;
+    --color-accent-hover: #a78bfa;
+  }
+
+  section#home {
+    position: relative;
+    min-height: calc(100vh - var(--navbar-height));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #fff;
+    padding: calc(var(--navbar-height) + 1rem) 1.5rem 3rem;
+    overflow: hidden;
+  }
+
+  section#home::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(10, 10, 10, 0.3), rgba(10, 10, 10, 0.85));
+    z-index: 0;
+  }
+
+  section#home > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  h1 {
+    font-family: 'Bodoni Moda', serif;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 500;
+    margin: 0;
+    animation: fadeIn 1s ease-out both;
+  }
+
+  p.subtitle {
+    margin-top: 1rem;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 1.125rem;
+    color: #d6d6d6;
+    animation: fadeIn 1.2s ease-out both;
+  }
+
+  .work-reel {
+    margin-top: 3rem;
+    animation: fadeIn 1.4s ease-out both;
+  }
+
+  .work-reel h2 {
+    font-family: 'Bodoni Moda', serif;
+    font-weight: 500;
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .work-reel a {
+    display: inline-block;
+    background-color: var(--color-accent);
+    color: #fff;
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 600;
+    padding: 0.9rem 2rem;
+    border-radius: 999px;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+
+  .work-reel a:hover {
+    background-color: var(--color-accent-hover);
+    transform: translateY(-2px);
+  }
+
+  .intro {
+    margin-top: 4rem;
+    max-width: 40rem;
+    font-family: 'Work Sans', sans-serif;
+    color: #e1e1e1;
+    line-height: 1.7;
+    animation: fadeIn 1.6s ease-out both;
+  }
+
+  .intro p {
+    margin-bottom: 1rem;
+  }
+
+  .intro p.email {
+    font-weight: 600;
+    color: #fff;
+  }
+
+  a.cta {
+    margin-top: 3rem;
+    display: inline-block;
+    background-color: var(--color-accent);
+    color: #fff;
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 700;
+    padding: 0.9rem 2.5rem;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    animation: fadeIn 1.8s ease-out both;
+  }
+
+  a.cta:hover {
+    background-color: var(--color-accent-hover);
+    transform: translateY(-2px);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 2.3rem;
+    }
+    p.subtitle {
+      font-size: 1rem;
+    }
+    .work-reel h2 {
+      font-size: 1.5rem;
+    }
+  }
+</style>
+
+<section
+  id="home"
+  style={`background:
+    radial-gradient(circle at 45% 25%, rgba(26,15,30,0.25), rgba(11,11,13,0.55) 70%),
+    url(${heroImage}) center -40px / cover no-repeat;
+    filter: brightness(1.05) contrast(0.95);
+  `}
+>
+  <h1>{title}</h1>
+  <p class="subtitle">{subtitle}</p>
+
+  <div class="intro">
+    {introParagraphs.map((text) => (
+      <p set:html={text}></p>
+    ))}
+    <p class="email">{email}</p>
+  </div>
+
+  <a href={ctaLink} class="cta">{ctaText}</a>
+</section>

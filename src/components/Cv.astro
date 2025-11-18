@@ -1,0 +1,133 @@
+---
+interface CvData {
+  title: string;
+  paragraphs: string[];
+  buttons: {
+    download: {
+      text: string;
+      url: string;
+    };
+    viewOnline: {
+      text: string;
+      url: string;
+    };
+  };
+}
+
+const { cvData } = Astro.props;
+---
+
+<section id="cv" class="py-24 bg-neutral-950 text-white font-[Work_Sans]">
+  <!-- Fuentes globales -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;500;600&family=Work+Sans:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  >
+
+  <!-- Título principal -->
+  <h2
+    class="text-4xl font-[Bodoni_Moda] font-medium text-center mb-16 tracking-wide"
+  >
+    {cvData.title}
+  </h2>
+
+  <!-- Contenedor principal -->
+  <div class="max-w-4xl mx-auto px-6 space-y-6">
+    <div class="cv-panel">
+      {cvData.paragraphs.map((p) => <p>{p}</p>)}
+
+      <!-- Botones -->
+      <div class="cv-buttons">
+        <!-- Descargar CV -->
+        <a
+          href={cvData.buttons.download.url}
+          download
+          class="cv-btn"
+        >
+          {cvData.buttons.download.text}
+        </a>
+
+        <!-- Ver CV online -->
+        <a
+          href={cvData.buttons.viewOnline.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="cv-btn"
+        >
+          {cvData.buttons.viewOnline.text}
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    :root {
+      --color-bg: #0b0b0d;
+      --color-panel: #1a0f1e;
+      --color-accent: #8b5cf6;
+      --color-accent-hover: #a78bfa;
+    }
+
+    /* Panel principal */
+    .cv-panel {
+      background-color: var(--color-panel);
+      border: 1px solid #2e2e2e;
+      border-radius: 1rem;
+      padding: 3rem 2rem;
+      color: #d6d6d6;
+      font-family: 'Work Sans', sans-serif;
+      line-height: 1.75;
+      font-size: 1.05rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .cv-panel:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+    }
+
+    /* Texto */
+    .cv-panel p {
+      margin-bottom: 1rem;
+    }
+
+    /* Botones */
+    .cv-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+      margin-top: 2.5rem;
+    }
+
+    .cv-btn {
+      background-color: var(--color-accent);
+      color: #fff;
+      font-family: 'Work Sans', sans-serif;
+      font-weight: 600;
+      padding: 0.9rem 2rem;
+      border-radius: 999px;
+      text-decoration: none;
+      letter-spacing: 0.4px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .cv-btn:hover {
+      background-color: var(--color-accent-hover);
+      transform: translateY(-2px);
+    }
+
+    /* Responsivo */
+    @media (max-width: 768px) {
+      h2 {
+        font-size: 2.3rem;
+      }
+
+      .cv-panel {
+        padding: 2rem 1.5rem;
+        font-size: 1rem;
+      }
+    }
+  </style>
+</section>

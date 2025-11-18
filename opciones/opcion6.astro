@@ -1,0 +1,155 @@
+---
+const {
+  title = "",
+  subtitle = "",
+  workReelTitle = "",
+  videoUrl = "#",
+  introParagraphs = [],
+  email = "",
+  ctaText = "",
+  ctaLink = "#"
+} = Astro.props;
+---
+
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;500;600&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --navbar-height: 4rem;
+    --accent: #b57af0;
+    --accent-hover: #d6a4ff;
+  }
+
+  section#home {
+    min-height: calc(100vh - var(--navbar-height));
+    background-color: #000;
+    color: #fff;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 4rem;
+    padding: calc(var(--navbar-height) + 3rem) 5vw 3rem;
+    box-sizing: border-box;
+  }
+
+  .text-side {
+    flex: 1;
+    max-width: 600px;
+  }
+
+  .media-side {
+    flex: 1;
+    text-align: center;
+  }
+
+  h1 {
+    font-family: 'Bodoni Moda', serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 500;
+    line-height: 1.1;
+    margin: 0;
+  }
+
+  p.subtitle {
+    font-family: 'Work Sans', sans-serif;
+    margin-top: 1rem;
+    color: #ccc;
+    font-weight: 300;
+    font-size: 1.1rem;
+  }
+
+  .intro {
+    font-family: 'Work Sans', sans-serif;
+    margin-top: 2rem;
+    line-height: 1.7;
+    color: #ddd;
+  }
+
+  .intro p {
+    margin-bottom: 1rem;
+  }
+
+  .intro p.email {
+    color: #fff;
+    font-weight: 500;
+  }
+
+  .cta {
+    display: inline-block;
+    margin-top: 2.5rem;
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background-color: var(--accent);
+    color: #000;
+    padding: 0.9rem 2rem;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+
+  .cta:hover {
+    background-color: var(--accent-hover);
+  }
+
+  .media-side h2 {
+    font-family: 'Bodoni Moda', serif;
+    font-weight: 500;
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .media-side a.video-btn {
+    display: inline-block;
+    background-color: transparent;
+    border: 2px solid var(--accent);
+    color: var(--accent);
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 500;
+    padding: 0.9rem 2rem;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .media-side a.video-btn:hover {
+    background-color: var(--accent);
+    color: #000;
+  }
+
+  @media (max-width: 900px) {
+    section#home {
+      flex-direction: column;
+      text-align: center;
+      gap: 3rem;
+    }
+    .text-side, .media-side {
+      max-width: 100%;
+    }
+  }
+</style>
+
+<section id="home">
+  <div class="text-side">
+    <h1>{title}</h1>
+    <p class="subtitle">{subtitle}</p>
+
+    <div class="intro">
+      {introParagraphs.map((text) => (
+        <p set:html={text}></p>
+      ))}
+      <p class="email">{email}</p>
+    </div>
+
+    <a href={ctaLink} class="cta">{ctaText}</a>
+  </div>
+
+  <div class="media-side">
+    <h2>{workReelTitle}</h2>
+    <a href={videoUrl} target="_blank" rel="noopener noreferrer" class="video-btn">
+      Play Video
+    </a>
+  </div>
+</section>

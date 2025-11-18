@@ -1,0 +1,232 @@
+---
+interface ContactData {
+  title: string;
+  instagramUrl: string;
+  email: string;
+  phone: string;
+  formspreeUrl: string;
+  placeholders: {
+    name: string;
+    email: string;
+    message: string;
+  };
+  buttonText: string;
+  directText: string;
+}
+
+const { contactData } = Astro.props;
+---
+
+<section id="contact" class="py-24 bg-neutral-950 text-white font-[Work_Sans]">
+  <!-- Fuentes -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;500;600&family=Work+Sans:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  >
+
+  <!-- Introduccion -->
+   <p class="text-center text-neutral-400 text-lg mb-4">
+    {contactData.intro}
+   </p>
+
+  <!-- Título -->
+  <h2
+    class="text-4xl font-[Bodoni_Moda] font-medium text-center mb-16 tracking-wide"
+  >
+    {contactData.title}
+  </h2>
+
+  <!-- Panel principal -->
+  <div class="max-w-2xl mx-auto px-6">
+    <div class="contact-panel">
+      <!-- Info de contacto -->
+      <div class="contact-info">
+        <div class="contact-icons">
+          <!-- Instagram -->
+          <a
+            href={contactData.instagramUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M7.75 2.75h8.5A5 5 0 0121.25 7.25v8.5a5 5 0 01-5 5h-8.5a5 5 0 01-5-5v-8.5a5 5 0 015-5z" />
+              <circle cx="12" cy="12" r="3.5" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>
+            </svg>
+          </a>
+
+          <!-- Email -->
+          <a href={`mailto:${contactData.email}`} aria-label="Email">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.75 6.75l7.25 5.25 7.25-5.25M4.75 6.75v10.5a1 1 0 001 1h12.5a1 1 0 001-1V6.75M4.75 6.75L12 12" />
+            </svg>
+          </a>
+
+          <!-- Teléfono -->
+          <a href={`tel:${contactData.phone}`} aria-label="Phone">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75a3 3 0 013-3h1.5a1 1 0 01.97.757l1.1 4.39a1 1 0 01-.27.93l-1.2 1.2a16 16 0 007.07 7.07l1.2-1.2a1 1 0 01.93-.27l4.39 1.1a1 1 0 01.757.97v1.5a3 3 0 01-3 3h-.75c-9.11 0-16.5-7.39-16.5-16.5v-.75z" />
+            </svg>
+          </a>
+        </div>
+
+        <p class="contact-text">
+          {contactData.directText}
+          <span class="highlight">{contactData.email}</span><br />
+          Phone: <span class="highlight">{contactData.phone}</span>
+        </p>
+      </div>
+
+      <!-- Formulario -->
+      <form
+        action={contactData.formspreeUrl}
+        method="POST"
+        class="contact-form"
+      >
+        <input
+          type="text"
+          name="name"
+          placeholder={contactData.placeholders.name}
+          required
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder={contactData.placeholders.email}
+          required
+        />
+        <textarea
+          name="message"
+          rows="4"
+          placeholder={contactData.placeholders.message}
+          required
+        ></textarea>
+
+        <button type="submit" class="cta-btn">
+          {contactData.buttonText}
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <style>
+    :root {
+      --color-bg: #0b0b0d;
+      --color-panel: #1a0f1e;
+      --color-accent: #8b5cf6;
+      --color-accent-hover: #a78bfa;
+    }
+
+    .contact-panel {
+      background-color: var(--color-panel);
+      border: 1px solid #2e2e2e;
+      border-radius: 1rem;
+      padding: 3rem 2rem;
+      color: #d6d6d6;
+      font-family: 'Work Sans', sans-serif;
+      line-height: 1.75;
+      font-size: 1.05rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .contact-panel:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+    }
+
+    .contact-icons {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .contact-icons a {
+      color: #cfcfcf;
+      transition: color 0.3s ease;
+    }
+
+    .contact-icons a:hover {
+      color: var(--color-accent);
+    }
+
+    .contact-text {
+      text-align: center;
+      font-size: 0.95rem;
+      color: #bdbdbd;
+    }
+
+    .contact-text .highlight {
+      color: #fff;
+      font-weight: 600;
+    }
+
+    /* Formulario */
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      background-color: #111;
+      border: 1px solid #333;
+      border-radius: 8px;
+      color: #eee;
+      padding: 0.9rem 1rem;
+      font-family: 'Work Sans', sans-serif;
+      font-size: 1rem;
+      transition: border-color 0.3s ease, background-color 0.3s ease;
+    }
+
+    .contact-form input::placeholder,
+    .contact-form textarea::placeholder {
+      color: #8d8d8d;
+      font-weight: 300;
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      outline: none;
+      border-color: var(--color-accent);
+      background-color: #161616;
+    }
+
+    /* Botón principal */
+    .cta-btn {
+      background-color: var(--color-accent);
+      color: #fff;
+      font-weight: 600;
+      padding: 0.9rem 2rem;
+      border-radius: 999px;
+      border: none;
+      font-family: 'Work Sans', sans-serif;
+      text-decoration: none;
+      letter-spacing: 0.4px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      cursor: pointer;
+      align-self: center;
+      margin-top: 1rem;
+    }
+
+    .cta-btn:hover {
+      background-color: var(--color-accent-hover);
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+      h2 {
+        font-size: 2.3rem;
+      }
+
+      .contact-panel {
+        padding: 2rem 1.5rem;
+        font-size: 1rem;
+      }
+    }
+  </style>
+</section>

@@ -1,0 +1,192 @@
+---
+const currentPath = Astro.url.pathname;
+
+// Idioma actual real
+let currentLang = currentPath.startsWith("/en") ? "en" : "es";
+
+// Base de menú por idioma
+const base = currentLang === "en" ? "/en" : "";
+
+// Datos del navbar desde props
+const { navbarData } = Astro.props;
+---
+<nav class="navbar fixed top-0 left-0 w-full z-50" role="navigation" aria-label="Main Navigation">
+  <!-- Fuentes -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;500;600&family=Work_Sans:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  >
+
+  <div class="navbar-inner max-w-6xl mx-auto flex justify-between items-center px-6 py-4">
+
+    <!-- Idiomas -->
+    <div class="lang-switch flex gap-2 font-[Work_Sans] text-sm z-50">
+      <button class="langBtn" data-lang="es">{navbarData?.lang_es ?? "ES"}</button>
+      <button class="langBtn" data-lang="en">{navbarData?.lang_en ?? "EN"}</button>
+    </div>
+
+    <!-- Botón hamburguesa -->
+    <button
+      class="hamburger"
+      aria-label="Toggle menu"
+      aria-expanded="false"
+      aria-controls="navbar-links"
+    >
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+  </div>
+
+  <!-- Menú lateral -->
+  <div class="navbar-links font-[Work_Sans] uppercase tracking-[0.15em] text-sm" id="navbar-links">
+    <a href={`${base}/`} class="nav-item">{navbarData?.home}</a>
+    <a href={`${base}/#sculpting`} class="nav-item">{navbarData?.sculpting}</a>
+    <a href={`${base}/#mouldmaking`} class="nav-item">{navbarData?.mouldmaking}</a>
+    <a href={`${base}/#prosthetic`} class="nav-item">{navbarData?.prosthetic}</a>
+    <a href={`${base}/#sfx`} class="nav-item">{navbarData?.sfx}</a>
+    <a href={`${base}/#cv`} class="nav-item">{navbarData?.cv}</a>
+    <a href={`${base}/#contact`} class="nav-item">{navbarData?.contact}</a>
+  </div>
+
+  <style>
+    :root {
+      --color-bg-navbar: rgba(15, 15, 18, 0.9);
+      --color-border: #2a2a2a;
+      --color-accent: #8b5cf6;
+      --color-accent-hover: #a78bfa;
+    }
+
+    .navbar {
+      background-color: var(--color-bg-navbar);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .langBtn {
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      background-color: var(--color-accent);
+      color: #fff;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .langBtn.active {
+      background-color: #fff;
+      color: #111;
+      font-weight: 600;
+    }
+
+    .langBtn:hover {
+      background-color: var(--color-accent-hover);
+      transform: translateY(-1px);
+    }
+
+    .hamburger {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      width: 28px;
+      height: 22px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      z-index: 1200;
+    }
+
+    .hamburger-line {
+      width: 100%;
+      height: 3px;
+      background: #eee;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .hamburger.open .hamburger-line:nth-child(1) {
+      transform: translateY(9px) rotate(45deg);
+    }
+    .hamburger.open .hamburger-line:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.open .hamburger-line:nth-child(3) {
+      transform: translateY(-9px) rotate(-45deg);
+    }
+
+    .navbar-links {
+      position: fixed;
+      top: 0;
+      right: -280px;
+      width: 280px;
+      height: 100vh;
+      background: #111;
+      box-shadow: -4px 0 20px rgba(0, 0, 0, 0.7);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      padding: 5rem 2rem;
+      gap: 1.8rem;
+      transition: right 0.3s ease, opacity 0.3s ease;
+      opacity: 0;
+      z-index: 1100;
+    }
+
+    .navbar-links.active {
+      right: 0;
+      opacity: 1;
+    }
+
+    .nav-item {
+      color: #e5e5e5;
+      text-decoration: none;
+      font-size: 1.1rem;
+      transition: color 0.3s ease;
+    }
+
+    .nav-item:hover {
+      color: var(--color-accent-hover);
+    }
+  </style>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const currentLang = window.location.pathname.startsWith("/en") ? "en" : "es";
+
+      // Activar botón idioma
+      document.querySelectorAll(".langBtn").forEach(btn => {
+        if (btn.dataset.lang === currentLang) btn.classList.add("active");
+      });
+
+      // Switch idioma
+      document.querySelectorAll(".langBtn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const lang = btn.dataset.lang;
+          const hash = window.location.hash;
+
+          let cleanPath = window.location.pathname.replace(/^\/en/, "");
+          if (cleanPath === "") cleanPath = "/";
+
+          let newUrl = lang === "en"
+            ? "/en" + cleanPath
+            : cleanPath;
+
+          window.location.href = newUrl + hash;
+        });
+      });
+
+      // Menú hamburguesa
+      const hamburger = document.querySelector(".hamburger");
+      const navbarLinks = document.querySelector(".navbar-links");
+
+      hamburger.addEventListener("click", () => {
+        const expanded = hamburger.getAttribute("aria-expanded") === "true";
+        hamburger.setAttribute("aria-expanded", (!expanded).toString());
+        hamburger.classList.toggle("open");
+        navbarLinks.classList.toggle("active");
+      });
+    });
+  </script>
+</nav>

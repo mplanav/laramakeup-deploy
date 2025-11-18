@@ -1,0 +1,233 @@
+<section id="mouldmaking" class="py-24 bg-neutral-950 text-white font-[Work_Sans]">
+  <!-- Fuentes -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;500;600&family=Work_Sans:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  >
+
+  <!-- Título -->
+  <h2 class="text-4xl font-[Bodoni_Moda] font-medium text-center mb-16 tracking-wide">
+    Mould Making Works
+  </h2>
+
+  <!-- GALERÍA DE IMÁGENES -->
+  <div class="max-w-3xl mx-auto relative bg-neutral-900 rounded-lg overflow-hidden mb-8 shadow-lg">
+    <img
+      id="mouldImage"
+      src=""
+      alt="Mould Making Work"
+      class="w-full md:h-[500px] sm:h-[350px] h-[280px] object-contain mx-auto bg-neutral-900 transition-opacity duration-500 opacity-0"
+    >
+
+    <!-- Flechas -->
+    <button
+      id="prevMouldBtn"
+      class="absolute top-1/2 left-2 -translate-y-1/2 bg-black/40 text-white p-3 rounded-full hover:bg-purple-700 transition"
+    >
+      &#10094;
+    </button>
+    <button
+      id="nextMouldBtn"
+      class="absolute top-1/2 right-2 -translate-y-1/2 bg-black/40 text-white p-3 rounded-full hover:bg-purple-700 transition"
+    >
+      &#10095;
+    </button>
+  </div>
+
+  <!-- Miniaturas -->
+  <div id="mouldThumbnails" class="max-w-3xl mx-auto flex justify-center gap-4 mt-6 overflow-hidden"></div>
+
+  <!-- GALERÍA DE VIDEOS -->
+  <div class="mt-24">
+    <h3 class="text-2xl font-[Bodoni_Moda] font-medium text-center mb-10 tracking-wide">
+      Videos
+    </h3>
+
+    <div class="max-w-3xl mx-auto relative bg-neutral-900 rounded-lg overflow-hidden shadow-lg">
+      <video
+        id="mouldVideo"
+        src=""
+        controls
+        class="w-full md:h-[500px] sm:h-[350px] h-[280px] object-contain mx-auto bg-neutral-900 transition-opacity duration-500 opacity-0"
+      ></video>
+
+      <button
+        id="prevMouldVideoBtn"
+        class="absolute top-1/2 left-2 -translate-y-1/2 bg-black/40 text-white p-3 rounded-full hover:bg-purple-700 transition"
+      >
+        &#10094;
+      </button>
+      <button
+        id="nextMouldVideoBtn"
+        class="absolute top-1/2 right-2 -translate-y-1/2 bg-black/40 text-white p-3 rounded-full hover:bg-purple-700 transition"
+      >
+        &#10095;
+      </button>
+    </div>
+
+    <div id="mouldVideoThumbnails" class="max-w-3xl mx-auto flex justify-center gap-4 mt-6 flex-wrap"></div>
+  </div>
+
+  <!-- ESTILOS -->
+  <style>
+    @media (max-width: 768px) {
+      #mouldThumbnails {
+        gap: 0.75rem;
+        justify-content: center;
+      }
+
+      #mouldThumbnails img {
+        width: 80px;
+        height: 80px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      #mouldThumbnails img {
+        width: 70px;
+        height: 70px;
+      }
+    }
+  </style>
+
+  <!-- SCRIPT -->
+  <script>
+    fetch("/api/mould-making_es.json")
+      .then(res => res.json())
+      .then(data => {
+        const images = data.images || [];
+        const videos = data.videos || [];
+
+        // ---- IMÁGENES ----
+        const mouldImage = document.getElementById("mouldImage");
+        const prevBtn = document.getElementById("prevMouldBtn");
+        const nextBtn = document.getElementById("nextMouldBtn");
+        const thumbsContainer = document.getElementById("mouldThumbnails");
+
+        let currentIndex = 0;
+        let startThumb = 0;
+        const visibleThumbs = 3;
+
+        function renderThumbnails() {
+          thumbsContainer.innerHTML = "";
+          const endThumb = Math.min(startThumb + visibleThumbs, images.length);
+          const visibleImages = images.slice(startThumb, endThumb);
+
+          visibleImages.forEach((img, i) => {
+            const realIndex = startThumb + i;
+            const thumb = document.createElement("img");
+            thumb.src = img;
+            thumb.className =
+              "thumbnail w-24 h-24 object-cover rounded-md cursor-pointer border-2 transition " +
+              (realIndex === currentIndex ? "border-purple-700" : "border-transparent hover:border-purple-700");
+            thumb.dataset.index = realIndex;
+            thumbsContainer.appendChild(thumb);
+
+            thumb.addEventListener("click", () => showImage(realIndex));
+          });
+        }
+
+        function updateThumbnailsPosition() {
+          if (currentIndex < startThumb) {
+            startThumb = currentIndex;
+          } else if (currentIndex >= startThumb + visibleThumbs) {
+            startThumb = currentIndex - visibleThumbs + 1;
+          }
+          renderThumbnails();
+        }
+
+        function showImage(index) {
+          mouldImage.classList.remove("opacity-100");
+          mouldImage.classList.add("opacity-0");
+
+          setTimeout(() => {
+            currentIndex = index;
+            mouldImage.src = images[currentIndex];
+            mouldImage.classList.remove("opacity-0");
+            mouldImage.classList.add("opacity-100");
+            updateThumbnailsPosition();
+          }, 250);
+        }
+
+        prevBtn.addEventListener("click", () => {
+          const newIndex = (currentIndex - 1 + images.length) % images.length;
+          showImage(newIndex);
+        });
+
+        nextBtn.addEventListener("click", () => {
+          const newIndex = (currentIndex + 1) % images.length;
+          showImage(newIndex);
+        });
+
+        if (images.length > 0) {
+          mouldImage.src = images[0];
+          mouldImage.classList.add("opacity-100");
+          renderThumbnails();
+        }
+
+        // ---- VIDEOS ----
+        const mouldVideo = document.getElementById("mouldVideo");
+        const prevVideoBtn = document.getElementById("prevMouldVideoBtn");
+        const nextVideoBtn = document.getElementById("nextMouldVideoBtn");
+        const videoThumbsContainer = document.getElementById("mouldVideoThumbnails");
+
+        let currentVideo = 0;
+
+        videoThumbsContainer.innerHTML = videos
+          .map(
+            (vid, i) => `
+              <video src="${vid}" muted preload="metadata"
+                class="video-thumb w-28 h-20 object-cover rounded-md cursor-pointer border-2 ${
+                  i === 0 ? "border-purple-700" : "border-transparent"
+                } hover:border-purple-700 transition"
+                data-index="${i}"></video>
+            `
+          )
+          .join("");
+
+        const videoThumbs = document.querySelectorAll("#mouldVideoThumbnails .video-thumb");
+
+        function updateActiveVideoThumb() {
+          videoThumbs.forEach((thumb, i) => {
+            thumb.classList.toggle("border-purple-700", i === currentVideo);
+            thumb.classList.toggle("border-transparent", i !== currentVideo);
+          });
+        }
+
+        function showVideo(index) {
+          mouldVideo.classList.remove("opacity-100");
+          mouldVideo.classList.add("opacity-0");
+
+          setTimeout(() => {
+            currentVideo = index;
+            mouldVideo.src = videos[currentVideo];
+            mouldVideo.load();
+            mouldVideo.classList.remove("opacity-0");
+            mouldVideo.classList.add("opacity-100");
+            updateActiveVideoThumb();
+          }, 250);
+        }
+
+        prevVideoBtn.addEventListener("click", () =>
+          showVideo((currentVideo - 1 + videos.length) % videos.length)
+        );
+
+        nextVideoBtn.addEventListener("click", () =>
+          showVideo((currentVideo + 1) % videos.length)
+        );
+
+        videoThumbs.forEach((thumb) => {
+          thumb.addEventListener("click", () => {
+            showVideo(parseInt(thumb.dataset.index));
+          });
+        });
+
+        if (videos.length > 0) {
+          mouldVideo.src = videos[0];
+          mouldVideo.classList.add("opacity-100");
+          updateActiveVideoThumb();
+        }
+      })
+      .catch(err => console.error("Error cargando mould-making:", err));
+  </script>
+</section>

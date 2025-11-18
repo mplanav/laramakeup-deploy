@@ -1,0 +1,188 @@
+---
+const {
+  title = "",
+  subtitle = "",
+  workReelTitle = "",
+  videoUrl = "#",
+  introParagraphs = [],
+  email = "",
+  ctaText = "",
+  ctaLink = "#"
+} = Astro.props;
+---
+
+<!-- Importar fuentes -->
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --navbar-height: 4rem;
+    --color-bg-top: #070707;
+    --color-bg-bottom: #1a0d25;
+    --color-accent: #9d4edd;
+    --color-accent-hover: #c77dff;
+  }
+
+  section#home {
+    min-height: calc(100vh - var(--navbar-height));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(180deg, var(--color-bg-top), var(--color-bg-bottom));
+    color: #fff;
+    padding: calc(var(--navbar-height) + 1.5rem) 1.5rem 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Animación de entrada */
+  @keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(40px) scale(0.98); filter: blur(4px); }
+    100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.6rem, 6vw, 4.2rem);
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+    margin: 0;
+    animation: fadeInUp 1s ease-out both;
+  }
+
+  p.subtitle {
+    margin-top: 1rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.15rem;
+    color: #bfbfbf;
+    font-weight: 300;
+    animation: fadeInUp 1.2s ease-out both;
+  }
+
+  .work-reel {
+    margin-top: 3.2rem;
+    animation: fadeInUp 1.4s ease-out both;
+  }
+
+  .work-reel h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .work-reel a {
+    display: inline-block;
+    background-color: var(--color-accent);
+    color: #fff;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    padding: 0.9rem 2rem;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .work-reel a:hover {
+    background-color: var(--color-accent-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 0 20px rgba(157, 78, 221, 0.3);
+  }
+
+  .intro {
+    margin-top: 4rem;
+    max-width: 40rem;
+    font-family: 'Outfit', sans-serif;
+    color: #d4d4d4;
+    line-height: 1.7;
+    font-size: 1rem;
+    animation: fadeInUp 1.6s ease-out both;
+  }
+
+  .intro p {
+    margin-bottom: 1rem;
+  }
+
+  .intro p.email {
+    font-weight: 600;
+    color: #ffffff;
+  }
+
+  a.cta {
+    margin-top: 3.5rem;
+    display: inline-block;
+    background: linear-gradient(90deg, var(--color-accent), #7c3aed);
+    color: #fff;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    padding: 0.9rem 2.6rem;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    animation: fadeInUp 1.8s ease-out both;
+  }
+
+  a.cta:hover {
+    background: linear-gradient(90deg, var(--color-accent-hover), #a855f7);
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px rgba(157, 78, 221, 0.3);
+  }
+
+  /* Fondo sutil animado (brillo difuso) */
+  section#home::before {
+    content: "";
+    position: absolute;
+    top: -10%;
+    left: -10%;
+    width: 120%;
+    height: 120%;
+    background: radial-gradient(circle at 30% 20%, rgba(157, 78, 221, 0.2), transparent 60%),
+                radial-gradient(circle at 70% 80%, rgba(111, 63, 212, 0.15), transparent 60%);
+    z-index: 0;
+    animation: moveGlow 12s ease-in-out infinite alternate;
+  }
+
+  @keyframes moveGlow {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(-20px, 20px) scale(1.05); }
+  }
+
+  section#home > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 2.4rem;
+    }
+    p.subtitle {
+      font-size: 1rem;
+    }
+    .work-reel h2 {
+      font-size: 1.4rem;
+    }
+  }
+</style>
+
+<section id="home">
+  <h1>{title}</h1>
+  <p class="subtitle">{subtitle}</p>
+
+  <div class="work-reel">
+    <h2>{workReelTitle}</h2>
+    <a href={videoUrl} target="_blank" rel="noopener noreferrer">Play Video</a>
+  </div>
+
+  <div class="intro">
+    {introParagraphs.map((text) => (
+      <p set:html={text}></p>
+    ))}
+    <p class="email">{email}</p>
+  </div>
+
+  <a href={ctaLink} class="cta">{ctaText}</a>
+</section>

@@ -1,0 +1,170 @@
+---
+const {
+  title = "",
+  subtitle = "",
+  workReelTitle = "",
+  videoUrl = "#",
+  introParagraphs = [],
+  email = "",
+  ctaText = "",
+  ctaLink = "#"
+} = Astro.props;
+---
+
+<!-- Importar fuentes -->
+<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --navbar-height: 4rem;
+    --accent: #b87bff;
+    --accent-hover: #d2aaff;
+  }
+
+  section#home {
+    min-height: calc(100vh - var(--navbar-height));
+    background-color: #000;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+    padding: calc(var(--navbar-height) + 6rem) 2rem 4rem;
+    box-sizing: border-box;
+  }
+
+  /* --- BLOQUE 1: TITULOS --- */
+  .hero-header {
+    max-width: 900px;
+    margin-bottom: 5rem;
+  }
+
+  .hero-header h1 {
+    font-family: 'Spectral', serif;
+    font-size: clamp(2.8rem, 6vw, 4.5rem);
+    font-weight: 600;
+    line-height: 1.15;
+    margin: 0;
+  }
+
+  .hero-header p.subtitle {
+    margin-top: 1.2rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 300;
+    font-size: 1.2rem;
+    color: #c4c4c4;
+    letter-spacing: 0.2px;
+  }
+
+  /* --- BLOQUE 2: INTRO --- */
+  .hero-intro {
+    max-width: 700px;
+    margin-bottom: 4rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: #ddd;
+    line-height: 1.7;
+    text-align: left;
+  }
+
+  .hero-intro p {
+    margin-bottom: 1rem;
+  }
+
+  .hero-intro p.email {
+    font-weight: 500;
+    color: #fff;
+  }
+
+  /* --- BLOQUE 3: CTA Y VIDEO --- */
+  .hero-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .hero-actions .work {
+    text-align: center;
+  }
+
+  .hero-actions h2 {
+    font-family: 'Spectral', serif;
+    font-size: 1.7rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+  }
+
+  .hero-actions a.btn {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+    padding: 1rem 2.2rem;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .hero-actions a.btn-primary {
+    background-color: var(--accent);
+    color: #000;
+  }
+
+  .hero-actions a.btn-primary:hover {
+    background-color: var(--accent-hover);
+  }
+
+  .hero-actions a.btn-outline {
+    background: transparent;
+    border: 2px solid var(--accent);
+    color: var(--accent);
+  }
+
+  .hero-actions a.btn-outline:hover {
+    background-color: var(--accent);
+    color: #000;
+  }
+
+  /* --- RESPONSIVE --- */
+  @media (max-width: 768px) {
+    section#home {
+      padding-top: calc(var(--navbar-height) + 4rem);
+    }
+    .hero-header h1 {
+      font-size: 2.3rem;
+    }
+    .hero-intro {
+      text-align: center;
+    }
+  }
+</style>
+
+<section id="home">
+  <!-- Bloque 1: encabezado -->
+  <div class="hero-header">
+    <h1>{title}</h1>
+    <p class="subtitle">{subtitle}</p>
+  </div>
+
+  <!-- Bloque 2: texto -->
+  <div class="hero-intro">
+    {introParagraphs.map((text) => (
+      <p set:html={text}></p>
+    ))}
+    <p class="email">{email}</p>
+  </div>
+
+  <!-- Bloque 3: CTA + video -->
+  <div class="hero-actions">
+    <div class="work">
+      <h2>{workReelTitle}</h2>
+      <a href={videoUrl} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+        Play Video
+      </a>
+    </div>
+
+    <a href={ctaLink} class="btn btn-outline">{ctaText}</a>
+  </div>
+</section>

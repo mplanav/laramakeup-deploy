@@ -1,0 +1,76 @@
+---
+import Layout from './../layouts/Layout.astro';
+import Navbar from './../components/Navbar.astro';
+import Hero from './../components/Hero.astro';
+import Cv from './../components/Cv.astro';
+import Prosthetic from './../components/Prosthetic.astro';
+import Contact from './../components/Contact.astro';
+import Footer from './../components/Footer.astro';
+import Sculpting from './../components/Sculpting.astro';
+import MouldMaking from './../components/Mould-making.astro';
+import Sfx from './../components/Sfx.astro';
+
+
+import { sanity } from './../lib/sanityClient';
+import { heroQuery } from './../lib/queries';
+import { cvQuery } from './../lib/queries';
+import { contactQuery } from './../lib/queries';
+import { navbarQuery } from './../lib/queries';
+
+const navbarData = await sanity.fetch(navbarQuery);
+
+//Importa los datos del hero en español
+const heroES = await sanity.fetch(heroQuery, { lang: "es" });
+const contactESRaw = await sanity.fetch(contactQuery, { lang: "es" });
+const contactES = {
+  intro: contactESRaw?.intro ?? "",
+  title: contactESRaw?.title ?? "",
+  instagramUrl: contactESRaw?.instagramUrl ?? "",
+  email: contactESRaw?.email ?? "",
+  phone: contactESRaw?.phone ?? "",
+  formspreeUrl: contactESRaw?.formspreeUrl ?? "",
+  placeholders: {
+    name: contactESRaw?.placeholders?.name ?? "",
+    email: contactESRaw?.placeholders?.email ?? "",
+    message: contactESRaw?.placeholders?.message ?? "",
+  },
+  buttonText: contactESRaw?.buttonText ?? "",
+  directText: contactESRaw?.directText ?? "",
+};
+
+const cvESRaw = await sanity.fetch(cvQuery, { lang: "es" });
+
+const cvES = {
+  title: cvESRaw?.title ?? "",
+  paragraphs: cvESRaw?.paragraphs ?? [],
+  buttons: {
+    download: {
+      text: cvESRaw?.cvDownloadText ?? "Descargar CV",
+      url: cvESRaw?.cvDownloadUrl ?? "#",
+    },
+    viewOnline: {
+      text: cvESRaw?.viewOnlineText ?? "Ver CV Online",
+      url: cvESRaw?.viewOnlineUrl ?? "#",
+    },
+  },
+};
+
+import { sculptingData } from './../data/sculpting_es';
+import { mouldData } from './../data/mould-making_es';
+import { sfxData } from './../data/sfx_es';
+import { prostheticData } from './../data/prosthetic_es';
+
+---
+
+<Layout>
+  <Navbar navbarData={navbarData}/>
+  <!--Pasa los datos del hero -->
+  <Hero {...heroES} />
+  <Sculpting sculptingData={sculptingData}/>
+  <MouldMaking mouldData={mouldData}/>
+  <Prosthetic prostheticData={prostheticData}/>
+  <Sfx sfxData={sfxData}/>
+  <Cv cvData={cvES}/>
+  <Contact contactData={contactES}/>
+  <Footer />
+</Layout>

@@ -1,0 +1,183 @@
+---
+const {
+  title = "",
+  subtitle = "",
+  workReelTitle = "",
+  videoUrl = "#",
+  introParagraphs = [],
+  email = "",
+  ctaText = "",
+  ctaLink = "#"
+} = Astro.props;
+---
+
+<!-- Importar fuentes -->
+<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --navbar-height: 4rem;
+    --accent-color: #b57af0;
+    --accent-hover: #d0a4ff;
+  }
+
+  section#home {
+    min-height: calc(100vh - var(--navbar-height));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    background-color: #000;
+    color: #fff;
+    padding: calc(var(--navbar-height) + 3rem) 5vw 3rem;
+    box-sizing: border-box;
+  }
+
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* Columna izquierda */
+  .text-col {
+    text-align: left;
+    animation: fadeUp 1s ease-out both;
+  }
+
+  h1 {
+    font-family: 'Italiana', serif;
+    font-size: clamp(3rem, 6vw, 4.5rem);
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    line-height: 1.1;
+    margin: 0;
+  }
+
+  p.subtitle {
+    margin-top: 1rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: #c4c4c4;
+  }
+
+  .intro {
+    margin-top: 2.5rem;
+    font-family: 'Inter', sans-serif;
+    color: #d1d1d1;
+    line-height: 1.7;
+    font-size: 1rem;
+  }
+
+  .intro p {
+    margin-bottom: 1rem;
+  }
+
+  .intro p.email {
+    font-weight: 600;
+    color: #fff;
+  }
+
+  /* Columna derecha */
+  .media-col {
+    text-align: left;
+    animation: fadeUp 1.2s ease-out both;
+  }
+
+  .media-col h2 {
+    font-family: 'Italiana', serif;
+    font-size: 1.8rem;
+    font-weight: 400;
+    margin-bottom: 1rem;
+  }
+
+  .media-col a.video-btn {
+    display: inline-block;
+    background-color: var(--accent-color);
+    color: #000;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0.9rem 2rem;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .media-col a.video-btn:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-3px);
+  }
+
+  .media-col a.cta {
+    display: inline-block;
+    margin-top: 2rem;
+    background: transparent;
+    border: 2px solid var(--accent-color);
+    color: var(--accent-color);
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    padding: 0.8rem 2rem;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .media-col a.cta:hover {
+    background-color: var(--accent-color);
+    color: #000;
+  }
+
+  /* Animación sutil */
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .hero-inner {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+    .text-col, .media-col {
+      text-align: center;
+    }
+    h1 {
+      font-size: 2.5rem;
+    }
+  }
+</style>
+
+<section id="home">
+  <div class="hero-inner">
+    <div class="text-col">
+      <h1>{title}</h1>
+      <p class="subtitle">{subtitle}</p>
+
+      <div class="intro">
+        {introParagraphs.map((text) => (
+          <p set:html={text}></p>
+        ))}
+        <p class="email">{email}</p>
+      </div>
+    </div>
+
+    <div class="media-col">
+      <h2>{workReelTitle}</h2>
+      <a href={videoUrl} target="_blank" rel="noopener noreferrer" class="video-btn">Play Video</a>
+      <a href={ctaLink} class="cta">{ctaText}</a>
+    </div>
+  </div>
+</section>
