@@ -38,6 +38,13 @@ export default defineType({
     }),
 
     defineField({
+      name: "ctaLink",
+      type: "string",
+      title: "CTA Link",
+      validation: Rule => Rule.required()
+    }),
+
+    defineField({
       name: 'heroImage',
       type: 'image',
       title: 'Hero Background Image',
