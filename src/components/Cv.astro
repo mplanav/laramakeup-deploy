@@ -7,10 +7,6 @@ interface CvData {
       text: string;
       url: string;
     };
-    viewOnline: {
-      text: string;
-      url: string;
-    };
   };
 }
 
@@ -45,16 +41,6 @@ const { cvData } = Astro.props;
           class="cv-btn"
         >
           {cvData.buttons.download.text}
-        </a>
-
-        <!-- Ver CV online -->
-        <a
-          href={cvData.buttons.viewOnline.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="cv-btn"
-        >
-          {cvData.buttons.viewOnline.text}
         </a>
       </div>
     </div>

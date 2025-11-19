@@ -47,17 +47,5 @@ export default defineType({
       type: 'string',
       title: 'Download Button Text',
     }),
-
-    defineField({
-      name: 'viewOnlineUrl',
-      type: 'string',
-      title: 'Online CV URL',
-    }),
-
-    defineField({
-      name: 'viewOnlineText',
-      type: 'string',
-      title: 'View Online Button Text',
-    }),
   ],
 })

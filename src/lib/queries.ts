@@ -42,7 +42,6 @@ export const cvQuery = `
     paragraphs,
     "cvDownloadUrl": cvDownloadFile.asset->url,
     cvDownloadText,
-    viewOnlineUrl,
     viewOnlineText
   }
 `;
